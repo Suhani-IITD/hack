@@ -10,3 +10,21 @@ class account(models.Model):
     gender = models.CharField(max_length=30,null=True)
     def _str_(self):
         return self.name
+
+
+class appointment(models.Model):
+    dt = models.DateField(null=True)
+    ti = models.TimeField(null=True)
+    desc = models.CharField(max_length = 100)
+    category = models.CharField(max_length = 50)
+    status = models.CharField(max_length = 20)
+
+
+class sleephrs(models.Model):
+    email=models.EmailField()
+    sleephr=models.IntegerField()
+    d=models.DateTimeField()
+    day=models.CharField(max_length=30)
+
+class lastemail(models.Model):
+    email=models.EmailField()
