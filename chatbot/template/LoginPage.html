@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID" />
+    <title>Login Page</title>
+    <style>
+      body {
+        opacity: 0; /* Initially hide the body to trigger the background fade-in effect */
+        transition: opacity 1s ease-out;
+        margin: 0;
+        overflow: hidden;
+        background-image: url(/static/backgroundimage.png);
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .center-box {
+        width: 70%;
+        max-width: 1200px;
+        height: 80vh;
+        background-color: #f0f9f8;
+        padding: 20px;
+        box-sizing: border-box;
+        text-align: center;
+        border-radius: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .left-container {
+        text-align: left;
+      }
+
+      .left-content img {
+        max-width: 100%;
+        height: 500px;
+        display: block;
+        margin: 0 auto;
+      }
+
+      .vertical-line {
+        width: 2px;
+        height: 55%;
+        background-color: #e4edec;
+        position: absolute;
+        top: 150px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      h2,
+      h4 {
+        margin: 0;
+      }
+
+      input {
+        width: 100%;
+        margin: 5px 5px 5px 0px;
+        padding: 10px;
+        border: 0.5px solid black;
+        border-radius: 4px;
+        font-size: 17px;
+      }
+
+      a:hover {
+        color: blue !important;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .right-container {
+        text-align: center;
+        flex-grow: 1;
+        position: relative;
+      }
+
+      form {
+        max-width: 100%;
+        height: 60%;
+        margin: 0;
+        position: absolute;
+        top: -180px;
+        transform: translateY(-50%);
+        right: 120px;
+      }
+
+      .font {
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+      }
+
+      ::placeholder {
+        font-weight: 100;
+        font-weight: lighter;
+        font-size: 14px;
+        color: #b2b3c2;
+        padding-left: 0px !important;
+      }
+
+      input[type="text"],
+      input[type="submit"] {
+        box-sizing: border-box !important;
+        width: 109% !important;
+      }
+
+      input[type="submit"] {
+        background-color: #3498db;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        position: absolute;
+        left: 9px;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #2980b9;
+        color: #e4edec;
+      }
+
+      input[type="submit"]:active {
+        background-color: #1f618d;
+      }
+
+      .horizontal-line {
+        border-top: 2px solid #e4edec;
+        width: 90%;
+        margin: 20px 0 0 20px;
+      }
+
+      .g-signin2 {
+        margin-top: 10px;
+        margin-right: 20px;
+        position: absolute;
+        left: 17px;
+        width: calc(100% - 100px);
+      }
+
+      .g-signin2 span {
+        display: none;
+      }
+
+      .g-signin2:after {
+        content: "Log in with Google";
+        font-size: 10px;
+        line-height: 0px;
+        font-weight: 10;
+        font-weight: lighter;
+        font-family: sans-serif;
+        position: absolute;
+        width: 100%;
+        margin-left: 7px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 14px;
+        font-weight: bold;
+        color: #949494;
+      }
+
+      @keyframes slideIn {
+        0% {
+          transform: translateX(-50%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+      .bubble {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        animation: floatBubbles linear infinite;
+        pointer-events: none;
+      }
+
+      .show-eye {
+        position: absolute;
+        right: -15px;
+        top: 200px;
+        transform: translateY(-50%);
+        font-size: 14px;
+        font-weight: 400;
+        user-select: none;
+        cursor: pointer;
+      }
+      .show-eye:hover {
+        color: blue;
+        transition: 1s;
+      }
+
+      @keyframes floatBubbles {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center-box">
+      <div class="left-container" style="margin-left: 30px">
+        <div style="margin: 0; padding: 0">
+          <img
+            src="/static/image3.png"
+            alt="Icon"
+            class="Icon"
+            style="width: 70px; height: 70px; clip-path: circle(50% at 50% 50%)"
+          />
+        </div>
+        <img src="/static/image1.png" alt="image1" />
+      </div>
+      <div class="vertical-line"></div>
+      <div class="right-container">
+        <form action="" method="POST">
+            {% csrf_token %}
+          <h2 class="font" style="font-size: 23px; font-weight: 500">
+            USER LOGIN
+          </h2>
+          <h4 style="text-align: center; font-size: 15px; font-weight: 300">
+            don't have an account?
+            <a
+              href="/SignUp"
+              target="_self"
+              style="color: #7ab5c4; font-size: 15px; font-weight: 300"
+              >Sign Up</a
+            >
+          </h4>
+          <br />
+          <h4
+            style="text-align: left; font-size: 17px; font-weight: 300"
+            class="font"
+          >
+            Email Address
+          </h4>
+          <input
+            type="email"
+            name="Email"
+            required
+            placeholder="you@example.com"
+          />
+          <br /><br />
+          <h4
+            style="text-align: left; font-weight: 300; font-size: 17px"
+            class="font"
+          >
+            Password
+            <a
+              href="./ForgottenPassword.html"
+              style="float: right; color: #7ab5c4; font-size: 14px"
+              >Forgot Password?</a
+            >
+          </h4>
+          <input
+            type="password"
+            name="userpassword"
+            required
+            placeholder="Enter 8 characters or more"
+          />
+          <br />
+          <br />
+          <input type="submit" value="LOGIN" name="submit" />
+          <br /><br />
+          <hr class="horizontal-line" />
+          <div
+            class="g-signin2"
+            data-onsuccess="onGoogleSignIn"
+            style="width: 220px; border-radius: 4px"
+          ></div>
+        </form>
+      </div>
+    </div>
+    <div
+      class="bubble"
+      style="top: 20px; left: 10px; width: 20px; height: 20px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 10px; right: 10px; width: 15px; height: 15px"
+    ></div>
+    <div
+      class="bubble"
+      style="right: 10px; bottom: 10px; width: 25px; height: 25px"
+    ></div>
+    <div
+      class="bubble"
+      style="bottom: 15px; left: 5px; width: 18px; height: 18px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 65px; left: 4px; width: 22px; height: 22px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 30px; right: 10px; width: 15px; height: 15px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 45px; left: 20px; width: 25px; height: 25px"
+    ></div>
+    <div
+      class="bubble"
+      style="bottom: 5px; right: px; width: 20px; height: 20px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 1060px; right: 9px; width: 12px; height: 12px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 5px; left: 15px; width: 17px; height: 17px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 85px; right: 5px; width: 23px; height: 23px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 20px; right: 25px; width: 14px; height: 14px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 9px; right: 300px; width: 16px; height: 16px"
+    ></div>
+    <script>
+      function onGoogleSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId());
+        console.log("Name: " + profile.getName());
+        console.log("Email: " + profile.getEmail());
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Background Fade-in Effect
+        document.body.style.opacity = 1;
+
+        // Form Container Slide-in
+        const centerBox = document.querySelector(".center-box");
+        centerBox.style.animation = "slideIn 1s ease-out forwards";
+
+        // Smooth Transition for the Login Button
+        const loginButton = document.querySelector('input[type="submit"]');
+        loginButton.style.transition = "background-color 0.3s";
+
+        loginButton.addEventListener("mouseover", function () {
+          this.style.backgroundColor = "#2980b9";
+        });
+
+        loginButton.addEventListener("mouseout", function () {
+          this.style.backgroundColor = "#3498db";
+        });
+
+        // Elegant Color Change for Text Links
+        const textLinks = document.querySelectorAll("a");
+
+        textLinks.forEach(function (link) {
+          link.style.transition = "color 0.3s";
+
+          link.addEventListener("mouseover", function () {
+            this.style.color = "navy";
+          });
+
+          link.addEventListener("mouseout", function () {
+            this.style.color = "#7ab5c4";
+          });
+        });
+
+        // Move bubbles randomly
+        const bubbles = document.querySelectorAll(".bubble");
+
+        function moveBubbles() {
+          bubbles.forEach(function (bubble) {
+            const speed = Math.random() * 2 + 1;
+            const angle = Math.random() * 360;
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight;
+
+            let x = startX;
+            let y = startY;
+
+            function updateBubblePosition() {
+              const radians = (angle * Math.PI) / 180;
+              x += speed * Math.cos(radians);
+              y += speed * Math.sin(radians);
+
+              bubble.style.left = x + "px";
+              bubble.style.top = y + "px";
+
+              if (
+                x < 0 ||
+                x > window.innerWidth ||
+                y < 0 ||
+                y > window.innerHeight
+              ) {
+                // If the bubble is outside the viewport, reset its position
+                x = startX;
+                y = startY;
+              }
+            }
+
+            // Update the bubble position at regular intervals
+            setInterval(updateBubblePosition, 50);
+          });
+        }
+
+        // Move bubbles initially
+        moveBubbles();
+
+        //To create a hide/show password button
+        const showBtn = document.createElement("div");
+        showBtn.className = "show-eye";
+        showBtn.textContent = "SHOW";
+        const PasswordInput = document.querySelector(
+          'input[name="userpassword"]'
+        );
+        PasswordInput.parentElement.appendChild(showBtn);
+        let isMouseDown = false;
+        showBtn.addEventListener("mousedown", function () {
+          isMouseDown = true;
+          toggePasswordVisibility();
+        });
+        showBtn.addEventListener("mouseup", function () {
+          isMouseDown = false;
+          toggePasswordVisibility();
+        });
+        showBtn.addEventListener("mouseleave", function () {
+          isMouseDown = false;
+          toggePasswordVisibility();
+        });
+
+        function toggePasswordVisibility() {
+          if (isMouseDown) {
+            PasswordInput.type = "text";
+            showBtn.textContent = "HIDE";
+          } else {
+            PasswordInput.type = "password";
+            showBtn.textContent = "SHOW";
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

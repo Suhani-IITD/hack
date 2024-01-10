@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <title>Sign Up Page</title>
+    <style>
+      body {
+        opacity: 0; /* Initially hide the body to trigger the background fade-in effect */
+        transition: opacity 1s ease-out;
+        margin: 0;
+        overflow: hidden;
+        background-image: url(/static/backgroundimage.png);
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .center-box {
+        width: 70%;
+        max-width: 1200px;
+        height: 80vh;
+        background-color: #f0f9f8;
+        padding: 20px;
+        box-sizing: border-box;
+        text-align: center;
+        border-radius: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .left-container {
+        text-align: left;
+      }
+
+      .left-content img {
+        max-width: 100%;
+        height: 500px;
+        display: block;
+        margin: 0 auto;
+      }
+      .vertical-line {
+        width: 2px;
+        height: 55%;
+        background-color: #e4edec;
+        position: absolute;
+        top: 150px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      h2,
+      h4 {
+        margin: 0;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="date"] {
+        width: 90%;
+        margin: 3px 5px 3px 0px;
+        padding: 5px 10px 5px 10px;
+        border: 0.5px solid #b2b3c2;
+        border-radius: 4px;
+        font-size: 17px;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #097409 !important;
+        font-size: 18px;
+      }
+
+      a:hover {
+        color: blue !important;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .right-container {
+        text-align: center;
+        flex-grow: 1;
+        position: relative;
+      }
+
+      form {
+        max-width: 100%;
+        height: 60%;
+        margin: 0;
+        position: absolute;
+        top: -180px;
+        transform: translateY(-50%);
+        right: 120px;
+      }
+
+      .font {
+        font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+          "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+      }
+
+      ::placeholder {
+        font-weight: 100;
+        font-weight: lighter;
+        font-size: 14px;
+        color: #b2b3c2;
+        padding-left: 0px !important;
+      }
+      @keyframes slideIn {
+        0% {
+          transform: translateX(-50%);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+      .bubble {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        animation: floatBubbles linear infinite;
+        pointer-events: none;
+      }
+      .show-eye {
+        position: absolute;
+        right: 15px;
+        top: 223px;
+        transform: translateY(-50%);
+        font-size: 14px;
+        font-weight: 400;
+        user-select: none;
+        cursor: pointer;
+      }
+      .show-eye:hover {
+        color: blue;
+        transition: 1s;
+      }
+      #button {
+        margin: 0;
+        padding: 4px;
+        border: none;
+        border-bottom: 2px;
+        background-color: rgba(34, 34, 230, 0.952);
+        color: white;
+        font-size: small;
+        font-weight: 400;
+        position: absolute;
+        top: 210px;
+        right: -40px;
+        cursor: pointer;
+      }
+      #button:hover {
+        background-color: darkblue;
+      }
+      #sbmt:disabled {
+        background-color: grey !important;
+      }
+
+      @keyframes floatBubbles {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center-box">
+      <div class="left-container" style="margin-left: 30px">
+        <div style="margin: 0; padding: 0">
+          <img
+            src="/static/image3.png"
+            alt="Icon"
+            class="Icon"
+            style="width: 70px; height: 70px; clip-path: circle(50% at 50% 50%)"
+          />
+        </div>
+        <img src="/static/image1.png" alt="image1" />
+      </div>
+      <div class="vertical-line"></div>
+      <div class="right-container">
+        <form action="" method="POST">
+            {% csrf_token %}
+          <h2 class="font" style="font-size: 23px; font-weight: 500">
+            CREATE NEW ACCOUNT
+          </h2>
+          <h4 style="text-align: center; font-size: 15px; font-weight: 300">
+            It's quick and easy
+          </h4>
+          <hr />
+          <input
+            type="text"
+            name="Full Name"
+            placeholder="Full Name"
+            required
+          />
+          <br />
+          <select
+            name="CountryCode"
+            id=""
+            style="
+              float: left;
+              width: 20%;
+              margin-left: 3px;
+              padding: 5px 0px;
+              border: 0.5px solid #b2b3c2;
+              border-radius: 4px;
+            "
+          >
+            <option value="#" style="overflow: hidden">
+              --Select Country Code--
+            </option>
+            <option value="+1">+1 (USA)</option>
+            <option value="+44">+44 (UK)</option>
+            <option value="+91">+91 (India)</option>
+          </select>
+          <input
+            type="tel"
+            name="phoneNumber"
+            placeholder="Mobile Number"
+            required
+            style="
+              width: 70%;
+              margin-left: 0px;
+              padding: 5px 5px 5px 10px;
+              border: 0.5px solid #b2b3c2;
+              border-radius: 4px;
+            "
+          />
+          <br />
+          <input
+            type="email"
+            name="Email"
+            required
+            placeholder="Email Address"
+          />
+          <br />
+          <input
+            type="password"
+            name="Password"
+            placeholder="New Password"
+            id="pass1"
+            required
+          />
+          <br />
+          <input
+            type="password"
+            name="ConfirmPassword"
+            placeholder="Confirm New Password"
+            id="pass2"
+            required
+          />
+          <br />
+          <input type="date" name="DOB" required placeholder="Date of birth" />
+          <fieldset
+            style="
+              background-color: #ffffff;
+              width: 90%;
+              border-radius: 4px;
+              padding: 5px 10px;
+              border: 0.5px solid #b2b3c2;
+              border-radius: 4px;
+              font-size: 17px;
+            "
+          >
+            <legend style="text-align: left">Gender</legend>
+            <p style="margin: 0px; padding: 0px">
+              <input
+                type="radio"
+                name="gender"
+                required
+                style="text-align: left; margin: 0px auto; cursor: pointer"
+                value="Male"
+              />
+              Male
+              <input
+                type="radio"
+                name="gender"
+                required
+                style="text-align: center; margin: 0px auto; cursor: pointer"
+                value="Custom"
+              />
+              Custom
+              <input
+                type="radio"
+                name="gender"
+                required
+                style="text-align: right; margin: 0px auto; cursor: pointer"
+                value="Female"
+              />
+              Female
+            </p>
+          </fieldset>
+          <br />
+          <input
+            type="submit"
+            value="Sign Up"
+            id="sbmt"
+            name="signup"
+            style="
+              text-align: center;
+              width: 70%;
+              padding: 10px;
+              color: white;
+              font-weight: bold;
+              background-color: #00a400;
+              border-radius: 4px;
+              cursor: pointer;
+              border: none;
+              font-size: 17px;
+            "
+          />
+          <button type="button" id="button">Check</button>
+          <h5>
+            Already have an account?
+            <a href="./LoginPage.html" target="_self" style="color: #7ab5c4"
+              >Sign In</a
+            >
+          </h5>
+        </form>
+      </div>
+    </div>
+    <div
+      class="bubble"
+      style="top: 20px; left: 10px; width: 20px; height: 20px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 10px; right: 10px; width: 15px; height: 15px"
+    ></div>
+    <div
+      class="bubble"
+      style="right: 10px; bottom: 10px; width: 25px; height: 25px"
+    ></div>
+    <div
+      class="bubble"
+      style="bottom: 15px; left: 5px; width: 18px; height: 18px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 65px; left: 4px; width: 22px; height: 22px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 30px; right: 10px; width: 15px; height: 15px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 45px; left: 20px; width: 25px; height: 25px"
+    ></div>
+    <div
+      class="bubble"
+      style="bottom: 5px; right: px; width: 20px; height: 20px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 1060px; right: 9px; width: 12px; height: 12px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 5px; left: 15px; width: 17px; height: 17px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 85px; right: 5px; width: 23px; height: 23px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 20px; right: 25px; width: 14px; height: 14px"
+    ></div>
+    <div
+      class="bubble"
+      style="top: 9px; right: 300px; width: 16px; height: 16px"
+    ></div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Background Fade-in Effect
+        document.body.style.opacity = 1;
+
+        // Form Container Slide-in
+        const centerBox = document.querySelector(".center-box");
+        centerBox.style.animation = "slideIn 1s ease-out forwards";
+
+        // Smooth Transition for the Login Button
+        const loginButton = document.querySelector('input[type="submit"]');
+        loginButton.style.transition = "background-color 0.3s";
+
+        loginButton.addEventListener("mouseover", function () {
+          this.style.backgroundColor = "#2980b9";
+        });
+
+        loginButton.addEventListener("mouseout", function () {
+          this.style.backgroundColor = "#3498db";
+        });
+
+        // Elegant Color Change for Text Links
+        const textLinks = document.querySelectorAll("a");
+
+        textLinks.forEach(function (link) {
+          link.style.transition = "color 0.5s";
+
+          link.addEventListener("mouseover", function () {
+            this.style.color = "navy";
+          });
+
+          link.addEventListener("mouseout", function () {
+            this.style.color = "#7ab5c4";
+          });
+        });
+
+        // Move bubbles randomly
+        const bubbles = document.querySelectorAll(".bubble");
+
+        function moveBubbles() {
+          bubbles.forEach(function (bubble) {
+            const speed = Math.random() * 2 + 1;
+            const angle = Math.random() * 360;
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight;
+
+            let x = startX;
+            let y = startY;
+
+            function updateBubblePosition() {
+              const radians = (angle * Math.PI) / 180;
+              x += speed * Math.cos(radians);
+              y += speed * Math.sin(radians);
+
+              bubble.style.left = x + "px";
+              bubble.style.top = y + "px";
+
+              if (
+                x < 0 ||
+                x > window.innerWidth ||
+                y < 0 ||
+                y > window.innerHeight
+              ) {
+                // If the bubble is outside the viewport, reset its position
+                x = startX;
+                y = startY;
+              }
+            }
+
+            // Update the bubble position at regular intervals
+            setInterval(updateBubblePosition, 50);
+          });
+        }
+
+        // Move bubbles initially
+        moveBubbles();
+
+        //To create a hide/show password button
+        const showBtn = document.createElement("div");
+        showBtn.className = "show-eye";
+        showBtn.textContent = "SHOW";
+        const confirmPasswordInput = document.querySelector(
+          'input[name="ConfirmPassword"]'
+        );
+        const PasswordInput = document.querySelector('input[name="Password"]');
+        PasswordInput.parentElement.appendChild(showBtn);
+
+        let isMouseDown = false;
+
+        showBtn.addEventListener("mousedown", function () {
+          isMouseDown = true;
+          togglePasswordVisibility();
+        });
+
+        showBtn.addEventListener("mouseup", function () {
+          isMouseDown = false;
+          togglePasswordVisibility();
+        });
+
+        showBtn.addEventListener("mouseleave", function () {
+          isMouseDown = false;
+          togglePasswordVisibility();
+        });
+
+        function togglePasswordVisibility() {
+          if (isMouseDown) {
+            PasswordInput.type = "text";
+            confirmPasswordInput.type = "text";
+            showBtn.textContent = "HIDE";
+          } else {
+            PasswordInput.type = "password";
+            confirmPasswordInput.type = "password";
+            showBtn.textContent = "SHOW";
+          }
+        }
+
+        //To check new password and create new password
+
+        let Btn = document.querySelector("#button");
+        let Submit = document.querySelector("#sbmt");
+        Submit.disabled = true;
+        Btn.addEventListener("click", () => {
+          let pass_1 = document.querySelector("#pass1").value;
+          let pass_2 = document.querySelector("#pass2").value;
+          let passs1 = String(pass_1);
+          let passs2 = String(pass_2);
+          if ( (passs1 === passs2) && (passs1 != "") && (passs2 != "") ) {
+            Submit.disabled = false;
+            alert(
+              "Pasword matched successfully. Proceed with the registration"
+            );
+          } else {
+            Submit.disabled = true;
+            alert("Password didn't match!! Check again");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
