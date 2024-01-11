@@ -1,4 +1,28 @@
-<!DOCTYPE html>
+[11:23, 1/10/2024] Umair IITD: <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <title>Sign Up Page</title>
+    <style>
+      body {
+        opacity: 0; /* Initially hide the body to trigger the background fade-in effect */
+        transition: opacity 1s ease-out;
+        margin: 0;
+        overflow: hidden;
+        background-image: url(./backgroundimage.png.jpg);
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .center-box {
+        width: 70%;
+        max-width: 1200p…
+[17:12, 1/10/2024] Umair IITD: <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,7 +36,7 @@
     }
     header {
       height: 120px;
-      background-image: url(/static/backgroundimage.png);
+      background-image: url(./backgroundimage.png.jpg);
       background-repeat: no-repeat;
       background-size: cover;
     }
@@ -25,8 +49,8 @@
       height: 90px;
       clip-path: circle(50% at 50% 50%);
       position: relative;
-      top: 15px; 
-      left: 40px; 
+      top: 15px; /To adjust the positioning of image/
+      left: 40px; /from top and left/
     }
     header div h1 {
       font-size: 36px;
@@ -35,8 +59,8 @@
       font-weight: 600;
       text-align: center;
       position: relative;
-      top: 42px; 
-      left: 120px; 
+      top: 42px; /To adjust the position of HAPIIMOOD from top/
+      left: 120px; /To adjust the position of HAPIIMOOD from left/
     }
     body {
       margin: 0;
@@ -213,7 +237,7 @@
       border-radius: 15px;
       background-color: #dff7ff;
       position: absolute;
-      bottom: 0px;
+      bottom: 30px;
       right: 210px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.216);
     }
@@ -238,7 +262,7 @@
   <body>
     <header>
       <div class="container">
-        <div><img src="/static/image3.png" alt="Icon" id="icon" /></div>
+        <div><img src="./image3.png.jpg" alt="Icon" id="icon" /></div>
         <div>
           <h1>HAPIIMOOD</h1>
         </div>
@@ -250,13 +274,13 @@
           <button class="button home"><a href="#">HOME</a></button>
         </div>
         <div class="buttons">
-          <button class="button b1"><a href="/interface">CHAT</a></button>
+          <button class="button b1"><a href="#">CHAT</a></button>
         </div>
         <div class="buttons">
           <button class="button b2"><a href="#">GET HELP</a></button>
         </div>
         <div class="buttons">
-          <button class="button b3"><a href="/appointments">MED SECTION</a></button>
+          <button class="button b3"><a href="#">MED SECTION</a></button>
           <br />
           <br />
           <div class="meds">
@@ -329,70 +353,70 @@
         }
       });
 
-      var maxEntries = 7; // Maximum number of entries to display
-      var chartData = {
-        labels: [],
-        datasets: [
-          {
-            label: "Sleep Hours",
-            backgroundColor: "rgba(75, 192, 192, 0.6)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
-            data: [],
-          },
-        ],
-      };
+    //   var maxEntries = 7; // Maximum number of entries to display
+    //   var chartData = {
+    //     labels: [],
+    //     datasets: [
+    //       {
+    //         label: "Sleep Hours",
+    //         backgroundColor: "rgba(75, 192, 192, 0.6)",
+    //         borderColor: "rgba(75, 192, 192, 1)",
+    //         borderWidth: 1,
+    //         data: [],
+    //       },
+    //     ],
+    //   };
 
-      var chartConfig = {
-        type: "bar",
-        data: chartData,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            x: {
-              stacked: true,
-            },
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      };
+    //   var chartConfig = {
+    //     type: "bar",
+    //     data: chartData,
+    //     options: {
+    //       responsive: true,
+    //       maintainAspectRatio: false,
+    //       scales: {
+    //         x: {
+    //           stacked: true,
+    //         },
+    //         y: {
+    //           beginAtZero: true,
+    //         },
+    //       },
+    //     },
+    //   };
 
-      var ctx = document.getElementById("myDynamicChart").getContext("2d");
-      var myChart = new Chart(ctx, chartConfig);
+    //   var ctx = document.getElementById("myDynamicChart").getContext("2d");
+    //   var myChart = new Chart(ctx, chartConfig);
 
-      function updateChart() {
-        var categoryInput = document.getElementById("dayInput").value;
-        var valueInput = document.getElementById("sleepHour").value;
+    //   function updateChart() {
+    //     var categoryInput = document.getElementById("dayInput").value;
+    //     var valueInput = document.getElementById("sleepHour").value;
 
-        if (categoryInput && valueInput) {
-          if (chartData.labels.length >= maxEntries) {
-            // Remove the first entry if the maximum limit is reached
-            chartData.labels.shift();
-            chartData.datasets[0].data.shift();
-          }
+    //     if (categoryInput && valueInput) {
+    //       if (chartData.labels.length >= maxEntries) {
+    //         // Remove the first entry if the maximum limit is reached
+    //         chartData.labels.shift();
+    //         chartData.datasets[0].data.shift();
+    //       }
 
-          chartData.labels.push(categoryInput);
-          chartData.datasets[0].data.push(parseInt(valueInput, 10));
+    //       chartData.labels.push(categoryInput);
+    //       chartData.datasets[0].data.push(parseInt(valueInput, 10));
 
-          // Update the chart
-          myChart.update();
+    //       // Update the chart
+    //       myChart.update();
 
-          // Clear input fields
-          document.getElementById("dayInput").value = "";
-          document.getElementById("sleepHour").value = "";
-        } else {
-          alert("Please enter both category name and value.");
-        }
-      }
-      let Btn1 = document.querySelector(".update-button");
+    //       // Clear input fields
+    //       document.getElementById("dayInput").value = "";
+    //       document.getElementById("sleepHour").value = "";
+    //     } else {
+    //       alert("Please enter both category name and value.");
+    //     }
+    //   }
+    //   let Btn1 = document.querySelector(".update-button");
 
-      Btn1.addEventListener("click", () => {
-        document.querySelector("#dayInput").value = "";
-        document.querySelector("#sleepHour").value = "";
-      });
+    //   Btn1.addEventListener("click", () => {
+    //     document.querySelector("#dayInput").value = "";
+    //     document.querySelector("#sleepHour").value = "";
+    //   });
     </script>
   </body>
 </html>

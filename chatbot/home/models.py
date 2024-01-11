@@ -23,7 +23,6 @@ class appointment(models.Model):
 class sleephrs(models.Model):
     email=models.EmailField()
     sleephr=models.IntegerField()
-    d=models.DateTimeField()
     day=models.CharField(max_length=30)
 
 class lastemail(models.Model):

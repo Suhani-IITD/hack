@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Input to Django</title>
+</head>
+<body>
+    <h1>Speak to Input Text:</h1>
+    <form action="" method = "POST">
+        {% csrf_token %}
+        <textarea id="textInput" rows="4" cols="50" placeholder="Speak..."></textarea>
+    </form>
+    <button id="voiceToggleButton" onclick="toggleVoiceRecognition()">Toggle Voice Input</button>
+    <button onclick="sendVoiceToBackend()">Send Voice to Backend</button>
+
+    <div id="textContainer"></div>
+    <button onclick="speakText()">Speak</button>
+
+    <script>
+        const textInput = document.getElementById('textInput');
+        const voiceToggleButton = document.getElementById('voiceToggleButton');
+        let recognition = null;
+        let isVoiceRecognitionOn = false;
+
+        // Check if the browser supports SpeechRecognition
+        if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            recognition.onresult = (event) => {
+                const result = event.results[event.results.length - 1];
+                const transcript = result[0].transcript;
+
+                // Update the text input with the recognized speech
+                textInput.value = transcript;
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+            };
+        } else {
+            alert('Speech recognition not supported in this browser.');
+        }
+
+        // Function to toggle voice recognition on/off
+        function toggleVoiceRecognition() {
+            if (recognition) {
+                if (isVoiceRecognitionOn) {
+                    recognition.stop();
+                    voiceToggleButton.textContent = 'Turn On Voice Input';
+                } else {
+                    recognition.start();
+                    voiceToggleButton.textContent = 'Turn Off Voice Input';
+                }
+
+                isVoiceRecognitionOn = !isVoiceRecognitionOn;
+            } else {
+                alert('Speech recognition not supported in this browser.');
+            }
+        }
+
+        // Function to send the voice input to Django backend
+        function sendVoiceToBackend() {
+            const voiceInput = textInput.value;
+
+            // Send the voice input to the Django backend using Fetch API or another method
+            fetch('voice', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',  // Add your CSRF token
+                },
+                body: JSON.stringify({ voiceInput }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the backend if needed
+                console.log('Backend response:', data);
+            })
+            .catch(error => console.error('Error sending voice input to backend:', error));
+        }
+        function speakText() {
+            // Fetch the text from Django backend
+            fetch('voice')
+                .then(response => response.json())
+                .then(data => {
+                    const textToSpeak = data.text;
+
+                    // Use Web Speech API to convert text to speech
+                    if ('speechSynthesis' in window) {
+                        const synthesis = window.speechSynthesis;
+                        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                        synthesis.speak(utterance);
+                    } else {
+                        alert("Sorry, your browser doesn't support the Web Speech API");
+                    }
+                })
+                .catch(error => console.error('Error fetching text:', error));
+        }
+    </script>
+</body>
+</html>

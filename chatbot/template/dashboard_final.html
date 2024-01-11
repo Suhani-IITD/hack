@@ -213,7 +213,7 @@
       border-radius: 15px;
       background-color: #dff7ff;
       position: absolute;
-      bottom: 0px;
+      bottom: 30px;
       right: 210px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.216);
     }
@@ -250,13 +250,13 @@
           <button class="button home"><a href="#">HOME</a></button>
         </div>
         <div class="buttons">
-          <button class="button b1"><a href="/interface">CHAT</a></button>
+          <button class="button b1"><a href="#">CHAT</a></button>
         </div>
         <div class="buttons">
           <button class="button b2"><a href="#">GET HELP</a></button>
         </div>
         <div class="buttons">
-          <button class="button b3"><a href="/appointments">MED SECTION</a></button>
+          <button class="button b3"><a href="#">MED SECTION</a></button>
           <br />
           <br />
           <div class="meds">
@@ -267,48 +267,55 @@
         </div>
       </div>
       <div class="vertical-line"></div>
-      <div class="dash-board">
-        <div class="Chart">
-          <canvas id="myDynamicChart"></canvas>
-          <div class="graph-input">
-            <select name="day" id="dayInput" style="color: white">
-              <option value="">--Day--</option>
-              <option value="Monday">MONDAY</option>
-              <option value="Tuesday">TUESDAY</option>
-              <option value="Wednesday">WEDNESDAY</option>
-              <option value="Thursday">THURSDAY</option>
-              <option value="Friday">FRIDAY</option>
-              <option value="Saturday">SATURDAY</option>
-              <option value="Sunday">SUNDAY</option>
-            </select>
-            <input
-              type="number"
-              id="sleepHour"
-              placeholder="Your Sleep Hours"
-            />
-            <button class="update-button" onclick="updateChart()">
-              UPDATE
-            </button>
+      <form action="" method="POST">
+        {% csrf_token %}
+        <div class="dash-board">
+            <div class="Chart">
+              <canvas id="myDynamicChart"></canvas>
+              <div class="graph-input">
+                <select name="day" id="dayInput" style="color: white">
+                  <option value="">--Day--</option>
+                  <option value="Monday">MONDAY</option>
+                  <option value="Tuesday">TUESDAY</option>
+                  <option value="Wednesday">WEDNESDAY</option>
+                  <option value="Thursday">THURSDAY</option>
+                  <option value="Friday">FRIDAY</option>
+                  <option value="Saturday">SATURDAY</option>
+                  <option value="Sunday">SUNDAY</option>
+                </select>
+                <input
+                  type="number"
+                  id="sleepHour"
+                  name="sleepHour"
+                  placeholder="Your Sleep Hours"
+                />
+                <button class="update-button" type="submit">
+                  UPDATE
+                </button>
+              </div>
+            </div>
+            <div class="content">
+              <div class="dailyDose">
+                <h2>Your Daily Dose</h2>
+              </div>
+              <div class="quote">
+                <p>
+                  " I will simply breathe, <br />
+                  &nbsp; &nbsp; and it will be okay <br />
+                  &nbsp; &nbsp; because I don't quit. "
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="content">
-          <div class="dailyDose">
-            <h2>Your Daily Dose</h2>
-          </div>
-          <div class="quote">
-            <p>
-              " I will simply breathe, <br />
-              &nbsp; &nbsp; and it will be okay <br />
-              &nbsp; &nbsp; because I don't quit. "
-            </p>
-          </div>
-        </div>
-      </div>
+      </form>
+      
     </main>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       let Btn = document.querySelector(".b3");
       let myDiv = document.querySelector(".meds");
+      const slphr = document.querySelector("#sleepHour").value;
+      const Btnn = document.querySelector(".update-button");
       let isClicked = false;
       Btn.addEventListener("mouseenter", () => {
         if (isClicked === false) {
@@ -329,70 +336,87 @@
         }
       });
 
-      var maxEntries = 7; // Maximum number of entries to display
-      var chartData = {
-        labels: [],
-        datasets: [
-          {
-            label: "Sleep Hours",
-            backgroundColor: "rgba(75, 192, 192, 0.6)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
-            data: [],
-          },
-        ],
-      };
+      setTimeout(() => {
+            fetch('dashboard', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: new URLSearchParams({ 'sleepHour': slphr})
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Update the chatbox with the processed result
+                    chatbox.appendChild(createChatLi(data.result, "incoming"));
+                });
+        }, 2000);
 
-      var chartConfig = {
-        type: "bar",
-        data: chartData,
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            x: {
-              stacked: true,
-            },
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      };
+        Btnn.addEventListener("click", () => {
+            var maxEntries = 7;
+            var chartData = {
+                labels: [],
+                datasets: [
+                    {
+                        label: "Sleep Hours",
+                        backgroundColor: "rgba(75,192,192,0.6)",
+                        borderColor: "rgba(75,192,192,1)",
+                        borderWidth: 1,
+                        data: [],
+                    },
+                ],
+            };
 
-      var ctx = document.getElementById("myDynamicChart").getContext("2d");
-      var myChart = new Chart(ctx, chartConfig);
+            var chartConfig = {
+                type:"bar",
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            }
+        });
 
-      function updateChart() {
-        var categoryInput = document.getElementById("dayInput").value;
-        var valueInput = document.getElementById("sleepHour").value;
+        var ctx = document.getElementById("myDynamicChart").getContext("2d");
+        var myChart = new Chart(ctx, chartConfig);
 
-        if (categoryInput && valueInput) {
-          if (chartData.labels.length >= maxEntries) {
-            // Remove the first entry if the maximum limit is reached
-            chartData.labels.shift();
-            chartData.datasets[0].data.shift();
-          }
+        function updateChart() {
+            //var categoryInput = document.getElementById("dayInput").value;
+            //var valueInput = document.getElementById("sleepHour").value;
 
-          chartData.labels.push(categoryInput);
-          chartData.datasets[0].data.push(parseInt(valueInput, 10));
+            var categoryInput = "Monday";
+            var valueInput = parseInt(data.result, 10);
 
-          // Update the chart
-          myChart.update();
+            if(categoryInput && valueInput) {
+                if (chartData.labels.length >= maxEntries) {
+                    chartData.labels.shift();
+                    chartData.datasets[0].data.push(parseInt(valueInput, 10));
 
-          // Clear input fields
-          document.getElementById("dayInput").value = "";
-          document.getElementById("sleepHour").value = "";
-        } else {
-          alert("Please enter both category name and value.");
+                    myChart.update();
+
+                    //document.getElementById("dayInput").value = "";
+                    //document.getElementById("sleepHour").value = "";
+                } else {
+                    alert("Please enter both category name and value");
+                }
+            }
+            let Btnn = document.querySelector(".update-button");
+            Btnn.addEventListener("click", () => {
+                //document.querySelector("#dayInput").value="";
+                //document.querySelector("#sleepHour").value = "";
+
+            });
         }
-      }
-      let Btn1 = document.querySelector(".update-button");
 
-      Btn1.addEventListener("click", () => {
-        document.querySelector("#dayInput").value = "";
-        document.querySelector("#sleepHour").value = "";
-      });
+     
     </script>
   </body>
 </html>

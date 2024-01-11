@@ -2,19 +2,44 @@ from django.shortcuts import render,HttpResponse, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+from json import dumps
 #from back_func import chatbot_io
 from home.models import account,appointment,sleephrs,lastemail
 import datetime
 
 # Create your views here.
 
+def sleep_default(e):
+    l2=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    for i in l2:
+        ins =sleephrs(email=e,sleephr=0,day=i)
+        ins.save()
+
+
+
 def appoint(request):
     context = {"success1":True,"name":'yup'}
-    return render(request,"appoint.html",context)
+    return render(request,"appointments.html",context)
 
 def new(request):
     c = {'name':'try'}
     return render(request,"home.html",c)
+
+# def handle_voice_input(request):
+#     if request.method == 'POST':
+#         data = json.loads(request.body)
+#         voice_input = data.get('voiceInput', '')
+#         print(voice_input)
+#         text_from_backend = "Hello from Django!"
+#         print('returning')
+#         return JsonResponse({'text': text_from_backend})
+        
+#         # Process the voice input as needed (e.g., perform some action, save to database)
+#         # ...
+
+#         # Return a response, you can customize this based on your requirements
+#         #return JsonResponse({'status': 'success', 'message': 'Voice input processed successfully'})
+#     return render(request,'voice.html')
 
 
 @csrf_exempt  # Only for demonstration, handle CSRF properly in a production environment
@@ -34,6 +59,14 @@ def interface(request):
 
 def dash(request):
     # if request.method == 'POST':
+    #     your_variable = request.POST.get('sleepHour')
+    #     #context['a'] = chatbot_io.working(your_variable)
+    #     # Your Python function logic here to process your_variable
+    #     print(your_variable)
+    #     processed_result = "8"
+    #     return JsonResponse({'result': processed_result})
+    return render(request,"dashboard.html")
+    # if request.method == 'POST':
     #     data = json.loads(request.body)
     #     print('done')
     #     day = data.get('day', '')
@@ -48,9 +81,9 @@ def dash(request):
     # # Handle other HTTP methods if needed
     # return JsonResponse({'error': 'Invalid request method'})
 
-    for i in lastemail.objects.all():
-        e=i.email
-        print(e)
+    # for i in lastemail.objects.all():
+    #     e=i.email
+    #     print(e)
     # hr = request.POST.get('sleep')
     # day = request.POST.get('day')
     # time=datetime.datetime.now()
@@ -58,7 +91,7 @@ def dash(request):
     # ins.save()
     # l=[["Day", "Sleep"],]
     # l={}
-    # l2=["Monday","Tuesday","Wednesday","Thrusday","Friday","Saturday","Sunday"]
+    # 
     # for j in l2:
     #     for i in sleephrs.objects.filter(email=e,day=j):
     #         pass
@@ -68,13 +101,24 @@ def dash(request):
     #     # l1.append(i.sleephr)
     #     # l.append(l1)
     # context={"sleep":l}
-    if request.method=='POST':
-        print('in')
-        d = request.POST.get('day')
-        s = request.POST.get('sleep')
+    
+        # print('in')
+        # da = request.POST.get('day')
+        # s = request.POST.get('sleep')
+        # sleep_record = sleephrs.objects.get(email=e,day=da)
+        # sleep_record.sleephr = s
+        # sleep_record.save()
+        # l1=[["Day","Sleep"]]
+        #l2=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+        # for i in l2:
+        #     data = sleephrs.objects.get(email=e, day = i)
+        #     l1.append([i,data.sleephr])
+        # context = {"sleep":l1}
+        # print(context)
+        # return render(request, 'dashboard.html',context)
         # processed_result = f"Processed: {context['a']}"
         # return JsonResponse({'result': processed_result})
-    return render(request,"dashboard.html")
+    # return render(request,"dashboard.html")
     # for i in sleephrs.objects.filter(email=e,day="tuesday"):
     #     l1=[]
     #     l1.append(i.day)
@@ -154,6 +198,7 @@ def create(request):
             lastemail.objects.all().delete()
             ins=lastemail(email=e)
             ins.save()
+            sleep_default(e)
             return redirect('dashboard')
             # return render(request,'home.html',context)
     return render(request,'SignUp.html',context)
