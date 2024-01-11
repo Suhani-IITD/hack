@@ -9,6 +9,7 @@ urlpatterns = [
     path('interface',views.interface, name = 'interface'),
     path('appointments',views.appoint, name = "appointments"),
     path('dashboard',views.dash, name = 'dashboard'),
+    path('helpline',views.help, name = 'helpline'),
     #path('voice', views.handle_voice_input, name = 'voice')
 
 ]

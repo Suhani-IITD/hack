@@ -3,11 +3,15 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 from json import dumps
-#from back_func import chatbot_io
+from back_func import chatbot_io
 from home.models import account,appointment,sleephrs,lastemail
 import datetime
 
 # Create your views here.
+
+def help(request):
+    return render(request,"help.html",)
+
 
 def sleep_default(e):
     l2=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
@@ -23,7 +27,7 @@ def appoint(request):
 
 def new(request):
     c = {'name':'try'}
-    return render(request,"home.html",c)
+    return render(request,"homepage.html",c)
 
 # def handle_voice_input(request):
 #     if request.method == 'POST':
@@ -48,8 +52,8 @@ def interface(request):
     if request.method == 'POST':
         your_variable = request.POST.get('textinput')
         context['m'] = your_variable
-        context['a'] = "training on hold"
-        #context['a'] = chatbot_io.working(your_variable)
+        #context['a'] = "training on hold"
+        context['a'] = chatbot_io.working(your_variable)
         # Your Python function logic here to process your_variable
         processed_result = f"Processed: {context['a']}"
         return JsonResponse({'result': processed_result})
